@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm run build -- --base-href "/mahjong/"
+      - run: npm run build -- --base-href "/Mahjong-High-Low/"
       - run: npm run docs
       - run: cp ./dist/mahjong/browser/index.html ./dist/mahjong/browser/404.html
       - uses: peaceiris/actions-gh-pages@v3
