@@ -6,7 +6,7 @@
 
 Compare hands, predict whether the hidden hand is higher or lower, build a winning streak, and survive until the tiles reach their limits.
 
-[**Play the Game**](https://memezsxz.github.io/mahjong/) · [**Code Documentation**](https://memezsxz.github.io/mahjong/docs/index.html)
+[**Play the Game**](https://memezsxz.github.io/Mahjong-High-Low/) · [**Code Documentation**](https://memezsxz.github.io/Mahjong-High-Low/docs/index.html)
 
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular\&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript\&logoColor=white)
@@ -37,11 +37,11 @@ The project focuses on reusable game logic, reactive state management, animation
 
 ### Play
 
-https://memezsxz.github.io/mahjong/
+https://memezsxz.github.io/Mahjong-High-Low/
 
 ### Documentation
 
-https://memezsxz.github.io/mahjong/docs/index.html
+https://memezsxz.github.io/Mahjong-High-Low/docs/index.html
 
 Both the game and generated Compodoc documentation are deployed automatically to GitHub Pages from the `no-nx` branch.
 
@@ -350,8 +350,8 @@ The Angular CLI is installed as a project dependency, so a global Angular instal
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/memezsxz/mahjong.git
-cd mahjong
+git clone https://github.com/memezsxz/Mahjong-High-Low.git
+cd Mahjong-High-Low
 ```
 
 ### 2. Install Dependencies
@@ -442,7 +442,7 @@ The command outputs the generated documentation into the production build direct
 
 The hosted version is available at:
 
-https://memezsxz.github.io/mahjong/docs/index.html
+https://memezsxz.github.io/Mahjong-High-Low/docs/index.html
 
 ---
 
@@ -463,7 +463,7 @@ The workflow:
 1. Checks out the repository.
 2. Configures Node.js 20.
 3. Runs `npm ci`.
-4. Builds the Angular application with the `/mahjong/` base path.
+4. Builds the Angular application with the `/Mahjong-High-Low/` base path.
 5. Generates Compodoc documentation.
 6. Creates a `404.html` fallback for client-side routing.
 7. Publishes the generated site to the `gh-pages` branch.
