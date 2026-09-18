@@ -98,65 +98,391 @@
                    <div class="content-data">
 
 
+<div align="center">
+
 <h1>Mahjong High-Low</h1>
+<h3>A Mahjong-inspired higher-or-lower game built with Angular</h3>
+<p>Compare hands, predict whether the hidden hand is higher or lower, build a winning streak, and survive until the tiles reach their limits.</p>
+<p><a href="https://memezsxz.github.io/mahjong/"><strong>Play the Game</strong></a> · <a href="https://memezsxz.github.io/mahjong/docs/index.html"><strong>Code Documentation</strong></a></p>
+<p><img src="https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white" alt="Angular" class="img-responsive">
+<img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white" alt="TypeScript" class="img-responsive">
+<img src="https://img.shields.io/badge/NgRx-Signals-BA2BD2" alt="NgRx" class="img-responsive">
+<img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" class="img-responsive">
+<img src="https://img.shields.io/badge/PrimeNG-21-DD0031" alt="PrimeNG" class="img-responsive">
+<img src="https://img.shields.io/badge/Deployed-GitHub%20Pages-222222?logo=github" alt="GitHub Pages" class="img-responsive"></p>
+</div>
+
+<hr>
+<h2>Overview</h2>
+<p><strong>Mahjong High-Low</strong> is a responsive single-page game built with Angular.</p>
+<p>The player is shown one Mahjong hand and must predict whether the hidden hand has a <strong>higher</strong> or <strong>lower</strong> total value.</p>
+<p>Each round moves through a staged deal, prediction, reveal, score update, and hand transition. Winning rounds build score and streaks, while tile values evolve throughout the run.</p>
+<p>The project focuses on reusable game logic, reactive state management, animation sequencing, persistent player settings, and a polished responsive interface for desktop and mobile play.</p>
 <blockquote>
-<p>Note: AI was used as a development aid during this project, mainly for iteration support, small implementation help, and refinement. The one area that was heavily AI-assisted end-to-end was the game animation work. The rest of the application, including the overall structure, gameplay logic, styling direction, and feature development, was primarily implemented by me with occasional AI support where useful.</p>
+<p>Mahjong High-Low uses Mahjong tiles and visual themes, but it is an original higher-or-lower game rather than a traditional Mahjong rules implementation.</p>
 </blockquote>
-<p>Mahjong High-Low is a single-page Angular game where the player sees one Mahjong hand, guesses whether the hidden hand is higher or lower, and advances through animated deal, reveal, scoring, and reshuffle flows. The project is structured around reusable game logic, UI components, and feature services for audio, transitions, score handling, and player settings. The interface is responsive and adapts for mobile layouts as well as desktop play.</p>
-<h2>Live</h2>
+<hr>
+<h2>Live Demo</h2>
+<h3>Play</h3>
+<p><a href="https://memezsxz.github.io/mahjong/">https://memezsxz.github.io/mahjong/</a></p>
+<h3>Documentation</h3>
+<p><a href="https://memezsxz.github.io/mahjong/docs/index.html">https://memezsxz.github.io/mahjong/docs/index.html</a></p>
+<p>Both the game and generated Compodoc documentation are deployed automatically to GitHub Pages from the <code>no-nx</code> branch.</p>
+<hr>
+<h2>Gameplay</h2>
+<p>The game begins on the landing page, where the player can:</p>
 <ul>
-<li><strong>Game:</strong> <a href="https://memezsxz.github.io/mahjong/">https://memezsxz.github.io/mahjong/</a></li>
-<li><strong>Docs:</strong> <a href="https://memezsxz.github.io/mahjong/docs/index.html">https://memezsxz.github.io/mahjong/docs/index.html</a></li>
+<li>Start a new run</li>
+<li>View the rules</li>
+<li>Configure game settings</li>
+<li>View the local leaderboard</li>
 </ul>
-<h2>Gameplay Loop</h2>
-<p>The player starts on the landing page, where they can begin a run immediately, review the basic rules, open the settings panel, and view the top-scores table. Once the game starts, the visible and hidden hands are dealt, the player chooses Higher or Lower, and the hidden hand is revealed through the animated round flow while the score, deck stats, and hand history update in the sidebar.</p>
-<p>The run continues hand by hand until a tile reaches <code>0</code> or <code>10</code>, or the reshuffle limit is exceeded. The current configuration allows <code>1</code> reshuffle. When the run ends, the player sees the final score and can name the run if it qualifies for the leaderboard. Exiting an active run does not offer score saving.</p>
-<h2>Project Stack</h2>
+<p>Once a run begins:</p>
+<ol>
+<li>A visible hand and hidden hand are dealt.</li>
+<li>The player predicts whether the hidden hand is <strong>Higher</strong> or <strong>Lower</strong>.</li>
+<li>The hidden hand is revealed.</li>
+<li>The result is resolved.</li>
+<li>Score and streak values are updated.</li>
+<li>Tile values are adjusted.</li>
+<li>The revealed hand becomes the basis for the next round.</li>
+<li>New tiles are drawn and the run continues.</li>
+</ol>
+<p>The game ends when one of the configured game-over conditions is reached.</p>
+<hr>
+<h2>Game Rules</h2>
+<p>Core game rules are centralized in:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/libs/util-game/game.config.ts</code></pre></div><p>Current configuration:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th>Rule</th>
+<th align="right">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default hand size</td>
+<td align="right">6</td>
+</tr>
+<tr>
+<td>Available hand sizes</td>
+<td align="right">3, 4, 6</td>
+</tr>
+<tr>
+<td>Minimum tile value</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Maximum tile value</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td>Honor tile starting value</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Maximum win streak</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Maximum reshuffles</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>Keeping these values in one configuration module separates game rules from presentation and animation logic.</p>
+<hr>
+<h2>Scoring &amp; Progression</h2>
+<p>Each prediction resolves as either a win or loss based on the total values of the visible and hidden hands.</p>
+<p>The game tracks:</p>
 <ul>
-<li>Angular <code>21.2.x</code> is the application framework used to build the SPA, routing, component structure, templates, dependency injection, and app lifecycle.</li>
-<li>NgRx Signals and Component Store are used for reactive local state and game-facing state management patterns.- PrimeNG provides ready-made UI components such as buttons, while <code>primeicons</code> provides the icon set used by those components.</li>
-<li>PrimeNG provides ready-made UI components such as buttons, while <code>primeicons</code> provides the icon set used by those components.</li>
-<li><code>@primeng/themes</code>, <code>@primeuix/themes</code>, and <code>tailwindcss-primeui</code> support PrimeNG theming and make PrimeNG components fit the project’s visual system.</li>
-<li>Tailwind CSS 4 is used for utility-first styling and layout throughout templates and feature screens.</li>
-<li>TypeScript powers the application code, shared models, utility layers, and typed state/configuration.</li>
-<li>Angular Service Worker caches tile image assets and app resources, so repeat visits load instantly and the app remains functional offline.</li>
-<li>Karma and Jasmine are used for unit testing.</li>
-<li>Compodoc is used for documentation generation through the <code>docs</code> script: <code>npm run docs</code>.</li>
+<li>Current score</li>
+<li>Consecutive wins</li>
+<li>Hand history</li>
+<li>Draw-pile size</li>
+<li>Discard-pile size</li>
+<li>Reshuffles</li>
+<li>Tile values</li>
+<li>Previous round results</li>
 </ul>
-<h2>Development</h2>
-<p>Start the local development server with:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng serve</code></pre></div><p>Then open <code>http://localhost:4200/</code>.</p>
+<p>The sidebar presents the player&#39;s current run information while the round is active.</p>
+<hr>
+<h2>Reshuffling</h2>
+<p>Tiles move between the draw and discard piles as rounds progress.</p>
+<p>When the draw pile can no longer provide the required hand, the game can perform a reshuffle sequence using discarded tiles.</p>
+<p>A run currently allows up to:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">3 reshuffles</code></pre></div><p>before reaching the configured reshuffle limit.</p>
+<p>The reshuffle process has its own UI and animation sequence rather than immediately replacing the deck state.</p>
+<hr>
+<h2>Leaderboard</h2>
+<p>Mahjong High-Low maintains a local top-score leaderboard.</p>
+<p>The leaderboard:</p>
+<ul>
+<li>Stores up to <strong>5 scores</strong></li>
+<li>Orders entries by score</li>
+<li>Uses the most recent entry as the tie-breaker</li>
+<li>Only accepts positive scores</li>
+<li>Persists entries through browser <code>localStorage</code></li>
+</ul>
+<p>Players whose final score qualifies can name their run before submitting it.</p>
+<p>Leaderboard data is stored locally in the browser and is not shared between devices.</p>
+<hr>
+<h2>Player Settings</h2>
+<p>Player preferences are also persisted using <code>localStorage</code>.</p>
+<p>Available settings include:</p>
+<ul>
+<li>Hand size</li>
+<li>Music</li>
+<li>Sound effects</li>
+<li>Animations</li>
+<li>Tile-value visibility</li>
+<li>Tutorial state</li>
+</ul>
+<p>Supported hand sizes are read directly from the centralized game configuration.</p>
+<hr>
+<h2>Responsive Design</h2>
+<p>The game is designed for both desktop and smaller screens.</p>
+<p>The game interface includes:</p>
+<ul>
+<li>Responsive hand layouts</li>
+<li>Desktop sidebar</li>
+<li>Mobile sidebar interaction</li>
+<li>Responsive settings panels</li>
+<li>Touch-friendly controls</li>
+<li>Adaptive game-stage sizing</li>
+</ul>
+<p>The mobile game sidebar can be opened and closed using pointer-driven interactions.</p>
+<hr>
+<h2>Architecture</h2>
+<p>The application separates game rules, state, data access, reusable UI, and route-level features.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-mermaid">flowchart TD
+    Routes[Angular Router]
+
+    Routes --&gt; Landing[Landing Page]
+    Routes --&gt; Game[Game Page]
+
+    Landing --&gt; Settings[Settings Service]
+    Landing --&gt; Scores[Scores Service]
+
+    Game --&gt; Store[Game Store]
+    Game --&gt; UI[Reusable UI Components]
+
+    Store --&gt; Logic[Pure Game Logic]
+    Store --&gt; Models[Shared Models]
+
+    Game --&gt; Reveal[Reveal Sequence]
+    Game --&gt; Transition[Round Transition]
+    Game --&gt; Reshuffle[Reshuffle Sequence]
+    Game --&gt; ScoreAnimation[Score Animation]
+    Game --&gt; Audio[Audio State]
+
+    Settings --&gt; Storage[(localStorage)]
+    Scores --&gt; Storage</code></pre></div><h3>Game Page</h3>
+<p><code>GamePage</code> acts as the main orchestration layer during a run.</p>
+<p>It coordinates:</p>
+<ul>
+<li>Game state</li>
+<li>Player bets</li>
+<li>Deal timing</li>
+<li>Reveal sequences</li>
+<li>Round transitions</li>
+<li>Score animations</li>
+<li>Reshuffling</li>
+<li>Audio</li>
+<li>Settings</li>
+<li>Exit handling</li>
+<li>Mobile UI behavior</li>
+</ul>
+<p>Complex animation and transition logic is delegated into dedicated services rather than being kept entirely inside the page component.</p>
+<hr>
+<h2>Project Structure</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/
+├── features/
+│   ├── landing-page/
+│   └── game-page/
+│
+└── libs/
+    ├── data-access/
+    ├── models/
+    ├── ui/
+    └── util-game/</code></pre></div><h3><code>features/</code></h3>
+<p>Contains route-level application features.</p>
+<h4><code>landing-page</code></h4>
+<p>Contains the starting screen, leaderboard access, settings, and navigation into the game.</p>
+<h4><code>game-page</code></h4>
+<p>Contains the active game experience and services responsible for round orchestration and animations.</p>
+<h3><code>libs/data-access</code></h3>
+<p>Contains stateful application services such as:</p>
+<ul>
+<li>Game state</li>
+<li>Audio</li>
+<li>Scores</li>
+<li>Player settings</li>
+</ul>
+<h3><code>libs/models</code></h3>
+<p>Contains shared TypeScript interfaces, enums, and data models.</p>
+<h3><code>libs/ui</code></h3>
+<p>Contains reusable presentation components such as:</p>
+<ul>
+<li>Hands</li>
+<li>Tiles</li>
+<li>Bet controls</li>
+<li>Score display</li>
+<li>Deck counters</li>
+<li>Hand history</li>
+<li>Settings panel</li>
+</ul>
+<h3><code>libs/util-game</code></h3>
+<p>Contains game rules and pure utility logic that can remain independent of the UI.</p>
+<hr>
+<h2>Technology Stack</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th>Area</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Angular 21.2</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>TypeScript 5.9</td>
+</tr>
+<tr>
+<td>State Management</td>
+<td>NgRx Signals</td>
+</tr>
+<tr>
+<td>UI Components</td>
+<td>PrimeNG 21</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Tailwind CSS 4</td>
+</tr>
+<tr>
+<td>Icons</td>
+<td>PrimeIcons</td>
+</tr>
+<tr>
+<td>Reactive Programming</td>
+<td>RxJS</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>Angular Router</td>
+</tr>
+<tr>
+<td>Offline Caching</td>
+<td>Angular Service Worker</td>
+</tr>
+<tr>
+<td>Unit Testing</td>
+<td>Jasmine + Karma</td>
+</tr>
+<tr>
+<td>Linting</td>
+<td>ESLint + Angular ESLint</td>
+</tr>
+<tr>
+<td>Formatting</td>
+<td>Prettier</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>Compodoc</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>GitHub Pages</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>GitHub Actions</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Offline Support</h2>
+<p>Production builds include Angular&#39;s service worker.</p>
+<p>Application resources and image assets are cached according to:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">ngsw-config.json</code></pre></div><p>This allows repeat visits to load cached application resources and game assets without requiring every resource to be fetched again.</p>
+<hr>
+<h2>Getting Started</h2>
+<h3>Requirements</h3>
+<p>The GitHub Pages deployment currently builds using:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">Node.js 20</code></pre></div><p>You will also need:</p>
+<ul>
+<li>npm</li>
+<li>Git</li>
+</ul>
+<p>The Angular CLI is installed as a project dependency, so a global Angular installation is not required.</p>
+<h3>1. Clone the Repository</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">git clone https://github.com/memezsxz/mahjong.git
+cd mahjong</code></pre></div><h3>2. Install Dependencies</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm ci</code></pre></div><h3>3. Start the Development Server</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm start</code></pre></div><p>or:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npx ng serve</code></pre></div><p>Then open:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">http://localhost:4200/</code></pre></div><p>The application automatically reloads when source files change.</p>
+<hr>
 <h2>Build</h2>
-<p>Build the project with:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng build</code></pre></div><h2>Test</h2>
-<p>Run unit tests with:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng test</code></pre></div><h2>Documentation</h2>
-<p>Generate project documentation with:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run docs</code></pre></div><p>Note: the repo already has a <code>docs</code> script configured for Compodoc. If Compodoc is not available in your environment, add/install it before running the command.</p>
-<h2>App Structure</h2>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app
-├── features/      # contains route-level features and page logic
-└── libs/          # contains shared libraries used across features
-    ├── data-access/   # contains state, storage, and app services
-    ├── models/        # contains shared TypeScript models
-    ├── ui/            # contains reusable UI components and UI helpers
-    └── util-game/     # contains game rules, config, and pure utilities</code></pre></div><h2>Constants Inventory</h2>
-<ul>
-<li><a href="./src/app/libs/util-game/game.config.ts">src/app/libs/util-game/game.config.ts</a> holds core game-rule constants such as tile values, reshuffle limits, win-streak caps, valid hand sizes, and the default hand size.</li>
-<li><a href="./src/app/features/game-page/game-page.animations.ts">src/app/features/game-page/game-page.animations.ts</a> holds game-page timing constants for dealing, reveal flow, transitions, score gain, and reshuffle sequencing.</li>
-<li><a href="./src/app/libs/ui/game-ui.animations.ts">src/app/libs/ui/game-ui.animations.ts</a> holds shared UI animation constants used by tiles, hands, deck counters, and score-display components.</li>
-<li><a href="./src/app/libs/data-access/game-audio-manager.service.ts">src/app/libs/data-access/game-audio-manager.service.ts</a> holds audio constants for sound file locations, music/effect sources, and playback volumes.</li>
-<li><a href="./src/app/libs/data-access/scores.service.ts">src/app/libs/data-access/scores.service.ts</a> holds leaderboard constants such as <code>MAX_SCORES = 5</code> and the score storage key.</li>
-<li><a href="./src/app/libs/data-access/settings.service.ts">src/app/libs/data-access/settings.service.ts</a> holds player-settings persistence constants and now reads valid hand sizes from the centralized game config.</li>
-<li><a href="./src/app/features/game-page/game-page-ui-shell.service.ts">src/app/features/game-page/game-page-ui-shell.service.ts</a> holds UI-flow constants such as <code>MAX_RUN_NAME_LENGTH = 10</code>.</li>
-<li><a href="./src/app/libs/ui/tile-asset-path.ts">src/app/libs/ui/tile-asset-path.ts</a> holds tile asset path constants such as <code>TILE_ASSET_DIRECTORY</code> and <code>TILE_ASSET_EXTENSION</code>.</li>
-<li><a href="./src/app/libs/ui/settings-panel/settings-panel.ts">src/app/libs/ui/settings-panel/settings-panel.ts</a> exposes the centralized hand-size options for the settings UI.</li>
-</ul>
-<h2>Code Quality</h2>
-<p><strong>Lint:</strong></p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng lint</code></pre></div><p><strong>Format:</strong></p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npx prettier --write .</code></pre></div><p><strong>Check formatting without writing:</strong></p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npx prettier --check .</code></pre></div>
+<p>Create a production build with:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run build</code></pre></div><p>The production configuration enables the Angular service worker.</p>
+<hr>
+<h2>Testing</h2>
+<p>Run the Jasmine/Karma test suite with:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm test</code></pre></div><hr>
+<h2>Linting</h2>
+<p>Run ESLint with:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run lint</code></pre></div><hr>
+<h2>Formatting</h2>
+<p>Format the repository with Prettier:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npx prettier --write .</code></pre></div><p>Check formatting without modifying files:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npx prettier --check .</code></pre></div><hr>
+<h2>Documentation</h2>
+<p>Generate the Compodoc documentation with:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run docs</code></pre></div><p>The command outputs the generated documentation into the production build directory so it can be deployed alongside the game.</p>
+<p>The hosted version is available at:</p>
+<p><a href="https://memezsxz.github.io/mahjong/docs/index.html">https://memezsxz.github.io/mahjong/docs/index.html</a></p>
+<hr>
+<h2>Deployment</h2>
+<p>Deployment is automated through GitHub Actions.</p>
+<p>A push to:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">no-nx</code></pre></div><p>triggers the GitHub Pages workflow.</p>
+<p>The workflow:</p>
+<ol>
+<li>Checks out the repository.</li>
+<li>Configures Node.js 20.</li>
+<li>Runs <code>npm ci</code>.</li>
+<li>Builds the Angular application with the <code>/mahjong/</code> base path.</li>
+<li>Generates Compodoc documentation.</li>
+<li>Creates a <code>404.html</code> fallback for client-side routing.</li>
+<li>Publishes the generated site to the <code>gh-pages</code> branch.</li>
+</ol>
+<hr>
+<h2>Development Notes</h2>
+<p>Game-rule configuration is intentionally separated from animation timing and presentation logic.</p>
+<p>Important locations include:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/libs/util-game/game.config.ts</code></pre></div><p>Core rules and limits.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/features/game-page/game-page.animations.ts</code></pre></div><p>Game-page reveal, deal, score, and transition timing.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/libs/ui/game-ui.animations.ts</code></pre></div><p>Shared hand, tile, deck, and UI animation timing.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/libs/data-access/game-audio-manager.service.ts</code></pre></div><p>Music and sound-effect configuration.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/libs/data-access/scores.service.ts</code></pre></div><p>Leaderboard persistence and qualification logic.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">src/app/libs/data-access/settings.service.ts</code></pre></div><p>Persistent player settings.</p>
+<hr>
+<h2>AI-Assisted Development</h2>
+<p>AI tools were used as development aids during this project for iteration, implementation assistance, and refinement.</p>
+<p>The game&#39;s animation work received the heaviest AI assistance.</p>
+<p>The application&#39;s overall architecture, gameplay systems, state design, styling direction, feature development, and integration were primarily implemented and directed manually.</p>
+<hr>
+<h2>Project Status</h2>
+<p>Mahjong High-Low is a complete playable web game and is deployed publicly through GitHub Pages.</p>
+
 
 
 
